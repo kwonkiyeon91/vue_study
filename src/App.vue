@@ -1,34 +1,32 @@
 <template>
     <div>
-        <div v-for="product in products" :key="product">
-            <img :src="product.image" />
-            <h4 @click="모달창열렸니 = true">{{product.title}}</h4>
-            <p>{{product.content}}</p>
-            <p>{{product.price}}</p>
-            <button @click="신고">허위매물신고</button><span> 신고수: {{num}}</span>
+        <div class="menu">
+            <a v-for="a in 메뉴들" :key="a"></a>
         </div>
+        <DiscountBanner />
 
-        <div class="black-bg" v-if="모달창열렸니 == true">
-            <div class="white-bg">
-                <h4>상세페이지</h4>
-                <p>상세페이지 내용</p>
-                <button @click="모달창열렸니 = false">닫기</button>
-            </div>
-        </div>
+        <ProductVeiw @openModal="modalPop = true; clickProduct = $event" :product="products[i]" v-for="(a, i) in products" :key="i" />
+
+        <ModalYellow @closeModal="modalPop = false;" :products="products" :clickProduct="clickProduct" :modalPop="modalPop"/>
     </div>
 </template>
 
 <script>
 import oneRoom from './data.js';
+import DiscountBanner from './DiscountBanner.vue';
+import ModalYellow from './ModalYellow.vue';
+import ProductVeiw from './ProductVeiw.vue';
 
 export default {
   name: 'App',
   data() {
     return {
-        모달창열렸니: false,
+        메뉴들: ["Home", "Shop", "About"],
+        modalPop: false,
         // products: ['역삼동 원룸', '천호동 원룸', '마포구 원룸'],
         products: oneRoom,
-        nums: 0
+        nums: 0,
+        clickProduct: 0
     }
   },
   methods: {
@@ -37,6 +35,9 @@ export default {
     }
   },
   components: {
+    DiscountBanner,
+    ModalYellow,
+    ProductVeiw
   }
 }
 </script>
@@ -57,6 +58,24 @@ body {
 div {
     box-sizing: border-box;
 }
+.product-card {
+    margin-bottom: 50px;
+}
+.product-card h4 {
+    cursor: pointer;
+}
+.product-card h4:hover {
+    color: green;
+}
+.product-card img {
+  width: 500px;
+}
+.discount{
+    background: #eee;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}
 .black-bg {
     width: 100%;
     height: 100%;
@@ -67,9 +86,10 @@ div {
     padding: 20px;
 }
 .white-bg {
-    width: 100%;
+    width: 40%;
     background: white;
     border-radius: 8px;
     padding: 20px;
+    margin: 160px auto;
 }
 </style>
