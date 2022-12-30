@@ -6,7 +6,7 @@
     </h4>
     <p>{{ product.content }}</p>
     <p>{{ product.price }}</p>
-    <!-- <button @click="신고;">허위매물신고</button><span> 신고수: {{ num }}</span> -->
+    <!-- <button @click="increase;">허위매물신고</button><span> 신고수: {{ num }}</span> -->
   </div>
 </template>
 

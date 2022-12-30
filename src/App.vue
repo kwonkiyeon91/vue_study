@@ -3,11 +3,18 @@
         <div class="menu">
             <a v-for="a in 메뉴들" :key="a"></a>
         </div>
-        <DiscountBanner />
+        <DiscountBanner :showDiscount="showDiscount" />
 
+        <button @click="priceLowSort">가격 낮은순 정렬</button>
+        <button @click="priceHighSort">가격 높은순 정렬</button>
+        <button @click="titleSort">상품명 순 정렬</button>
+        <button @click="sortBack">되돌리기</button>
+        
         <ProductVeiw @openModal="modalPop = true; clickProduct = $event" :product="products[i]" v-for="(a, i) in products" :key="i" />
 
-        <ModalYellow @closeModal="modalPop = false;" :products="products" :clickProduct="clickProduct" :modalPop="modalPop"/>
+        <transition name="fade">
+          <ModalYellow @closeModal="modalPop = false;" :products="products" :clickProduct="clickProduct" :modalPop="modalPop"/>
+        </transition>
     </div>
 </template>
 
@@ -21,18 +28,52 @@ export default {
   name: 'App',
   data() {
     return {
+        showDiscount: 30,
         메뉴들: ["Home", "Shop", "About"],
         modalPop: false,
         // products: ['역삼동 원룸', '천호동 원룸', '마포구 원룸'],
         products: oneRoom,
+        originProduct: [...oneRoom],
         nums: 0,
         clickProduct: 0
     }
   },
   methods: {
-    신고() {
+    increase() {
        return this.num ++
-    }
+    },
+    priceLowSort() {
+     this.products.sort(function(a,b) {
+      return a.price - b.price;
+     })
+    },
+    priceHighSort() {
+     this.products.sort(function(a,b) {
+      return b.price - a.price;
+     })
+    },
+    titleSort() {
+     this.products.sort(function(a, b) {
+      var aa = a.title.toUpperCase();
+      var bb = b.title.toUpperCase();
+
+      return aa > bb ? 1 : aa < bb ? -1 : 0;
+     });
+    },
+     sortBack() {
+    //  this.products.sort(function(a,b) {
+    //    return a.id - b.id;
+    //  })
+      this.products = [...this.originProduct];
+    },
+  },
+  mounted() {
+    let interval = setInterval(()=>{
+      this.showDiscount --;
+      if (this.showDiscount == 0) {
+        clearInterval(interval);
+      }
+    }, 1000);
   },
   components: {
     DiscountBanner,
@@ -92,4 +133,11 @@ div {
     padding: 20px;
     margin: 160px auto;
 }
+.fade-enter-from {transform: translateY(-1000px);}
+.fade-enter-active {transition: all 1s;}
+.fade-enter-to {transform: translateY(0px);}
+
+.fade-leave-from {opacity: 1;}
+.fade-leave-active {transition: all 1s;}
+.fade-leave-to {opacity: 0;}
 </style>

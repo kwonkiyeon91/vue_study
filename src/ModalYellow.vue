@@ -28,7 +28,10 @@ export default {
             } else if ( isNaN(a) ) {
                 alert("숫자만 입력해주세요.");
                 this.month = 1;
-            } 
+            } else if (a === 2) {
+                alert("3개월부터 가능합니다.");
+                this.month = 1;
+            }
         }
     },
     props: {
