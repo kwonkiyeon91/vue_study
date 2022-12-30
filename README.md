@@ -1,4 +1,4 @@
-# vuestagram
+# vue_study
 
 ## Project setup
 ```
